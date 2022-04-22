@@ -16,3 +16,4 @@ Note: this exercise does reflect some of the concepts used in safety-critical en
   - https://www.deutschebahn.com/en/Digitalization/technology/New-Technology/blockchain-3520362
 
 BME MIT Blockchain technológiák és alkalmazások - 2021/22/2 - Homework assignment
+
