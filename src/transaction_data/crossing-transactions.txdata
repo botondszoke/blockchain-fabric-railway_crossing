@@ -1,0 +1,46 @@
+[
+    {
+        "transactionName": "crossingExists",
+        "transactionLabel": "A test crossingExists transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "createCrossing",
+        "transactionLabel": "A test createCrossing transaction",
+        "arguments": [
+            "001",
+            "FreeToCross",
+            "1000000",
+            "[1]"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "readCrossing",
+        "transactionLabel": "A test readCrossing transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "updateCrossing",
+        "transactionLabel": "A test updateCrossing transaction",
+        "arguments": [
+            "001",
+            "some other value"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "deleteCrossing",
+        "transactionLabel": "A test deleteCrossing transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    }
+]
