@@ -10,19 +10,19 @@ export class CrossingContract extends Contract {
 
     @Transaction(false)
     @Returns('boolean')
-    private async crossingExists(ctx: Context, crossingId: string): Promise<boolean> {
+    public async crossingExists(ctx: Context, crossingId: string): Promise<boolean> {
         const data: Uint8Array = await ctx.stub.getState(crossingId);
         return (!!data && data.length > 0);
     }
 
     @Transaction()
-    public async createCrossing(ctx: Context, crossingId: string, status: CrossingStatus, validityTime: number, laneCapacities: number[]): Promise<void> {
+    public async createCrossing(ctx: Context, crossingId: string, status: CrossingStatus, validityTime: number, laneNumber: number, laneCapacity: number): Promise<void> {
         const exists: boolean = await this.crossingExists(ctx, crossingId);
         if (exists) {
             throw new Error(`The crossing ${crossingId} already exists`);
         }
-        if (laneCapacities.length <= 0) {
-            throw new Error(`Lane capacities were not provided`);
+        if (laneNumber <= 0) {
+            throw new Error(`At least 1 lane is needed`);
         }
         const crossing: Crossing = new Crossing();
 
@@ -32,8 +32,11 @@ export class CrossingContract extends Contract {
         crossing.validityTime = validityTime;
 
         const lanes: string[][] = [];
-        for (let i = 0; i < laneCapacities.length; i++) {
-            const lane = new Array<string>(laneCapacities[i]);
+        for (let i = 0; i < laneNumber; i++) {
+            let lane = [];
+            for (let j = 0; j < laneCapacity; j++) {
+                lane.push(null);
+            }
             lanes.push(lane);
         }
         crossing.lanes = lanes;
@@ -44,7 +47,7 @@ export class CrossingContract extends Contract {
 
     @Transaction(false)
     @Returns('Crossing')
-    private async readCrossing(ctx: Context, crossingId: string): Promise<Crossing> {
+    public async readCrossing(ctx: Context, crossingId: string): Promise<Crossing> {
         const exists: boolean = await this.crossingExists(ctx, crossingId);
         if (!exists) {
             throw new Error(`The crossing ${crossingId} does not exist`);
@@ -66,7 +69,7 @@ export class CrossingContract extends Contract {
         if (!exists) {
             throw new Error(`The crossing ${crossingId} does not exist`);
         }
-        const crossing: Crossing = new Crossing();
+        const crossing: Crossing = await this.readCrossing(ctx, crossingId);
         const now = Math.floor(Date.now() / 1000); // time in seconds
         crossing.status = newStatus;
         crossing.timeOfUpdate = now;
@@ -94,16 +97,17 @@ export class CrossingContract extends Contract {
             let pos = [-1, -1];
             for (let i = 0; i < crossing.lanes.length; i++) {
                 for (let j = 0; j < crossing.lanes[i].length; j++) {
-                    if (pos === [-1, -1] && typeof crossing.lanes[i][j] === 'undefined') {
-                        pos = [i, j];
+                    if (pos[0] === -1 || pos[1] === -1 && crossing.lanes[i][j] === null) {
+                        pos[0] = i;
+                        pos[1] = j;
                         break;
                     }
                 }
-                if (pos !== [-1, -1]) {
+                if (pos[0] !== -1 || pos[1] !== -1) {
                     break;
                 }
             }
-            if (pos === [-1, -1]) {
+            if (pos[0] === -1 || pos[1] === -1) {
                 return false;
             }
             crossing.lanes[pos[0]][pos[1]] = ctx.clientIdentity.getID();
@@ -119,19 +123,20 @@ export class CrossingContract extends Contract {
         let pos = [-1, -1];
         for (let i = 0; i < crossing.lanes.length; i++) {
             for (let j = 0; j < crossing.lanes[i].length; j++) {
-                if (pos === [-1, -1] && crossing.lanes[i][j] === ctx.clientIdentity.getID()) {
-                    pos = [i, j];
+                if (pos[0] === -1 || pos[1] === -1 && crossing.lanes[i][j] === ctx.clientIdentity.getID()) {
+                    pos[0] = i;
+                    pos[1] = j;
                     break;
                 }
             }
-            if (pos !== [-1, -1]) {
+            if (pos[0] !== -1 || pos[1] !== -1) {
                 break;
             }
         }
-        if (pos === [-1, -1]) {
+        if (pos[0] === -1 || pos[1] === -1) {
             throw new Error("Vehicle not found");
         }
-        crossing.lanes[pos[0]][pos[1]] = undefined;
+        crossing.lanes[pos[0]][pos[1]] = null;
         const buffer: Buffer = Buffer.from(JSON.stringify(crossing));
         await ctx.stub.putState(crossingId, buffer); 
     }
@@ -156,7 +161,7 @@ export class CrossingContract extends Contract {
                 let count = 0;
                 for (let i = 0; i < crossing.lanes.length; i++) {
                     for (let j = 0; j < crossing.lanes[i].length; j++) {
-                        if (typeof crossing.lanes[i][j] !== 'undefined') {
+                        if (crossing.lanes[i][j] !== null) {
                             count++;
                         }
                     }
@@ -168,6 +173,11 @@ export class CrossingContract extends Contract {
                     success = true;
                 }
                 currentTime = Math.floor(Date.now() / 1000);
+            }
+            if (!success) {
+                crossing.status = CrossingStatus.FREE_TO_CROSS;
+                let buffer: Buffer = Buffer.from(JSON.stringify(crossing));
+                await ctx.stub.putState(crossingId, buffer);
             }
             return success;
         }

@@ -11,7 +11,8 @@ import * as chaiAsPromised from 'chai-as-promised';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 import { CrossingStatus } from './crossing';
-import winston from 'winston';
+import winston = require('winston');
+//import { should } from 'chai';
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -50,10 +51,22 @@ describe('CrossingContract', () => {
 
     });
 
+    describe('#crossingExists', () => {
+
+        it('should return crossing', async ()=> {
+            await contract.crossingExists(ctx, '1001').should.eventually.be.true;
+        }); 
+
+        it('should return false for a crossing that does not exist', async () => {
+            await contract.crossingExists(ctx, '1003').should.eventually.be.false;
+        });
+
+    });
+
     describe('#createCrossing', () => {
 
         it('should create a crossing', async () => {
-            await contract.createCrossing(ctx, '1003', CrossingStatus.FREE_TO_CROSS,1000000,[1]);
+            await contract.createCrossing(ctx, '1003', CrossingStatus.FREE_TO_CROSS,1000000,1);
             ctx.stub.putState.should.have.been.calledOnceWithExactly('1003', Buffer.from('{"status":"FreeToCross", "validityTime":1000000,"laneCapacities":[1]}'));
         });
 

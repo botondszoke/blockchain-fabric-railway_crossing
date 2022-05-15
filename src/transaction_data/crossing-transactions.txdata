@@ -13,8 +13,8 @@
         "arguments": [
             "001",
             "FreeToCross",
-            "1000000",
-            "[1]"
+            500,
+            [1]
         ],
         "transientData": {}
     },
@@ -31,13 +31,46 @@
         "transactionLabel": "A test updateCrossing transaction",
         "arguments": [
             "001",
-            "some other value"
+            "FreeToCross",
+            500
         ],
         "transientData": {}
     },
     {
         "transactionName": "deleteCrossing",
         "transactionLabel": "A test deleteCrossing transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "permissionToCrossVehicle",
+        "transactionLabel": "A test permissionToCrossVehicle transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "permissionReleaseVehicle",
+        "transactionLabel": "A test permissionReleaseVehicle transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "permissionToCrossTrain",
+        "transactionLabel": "A test permissionToCrossTrain transaction",
+        "arguments": [
+            "001"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "permissionReleaseTrain",
+        "transactionLabel": "A test permissionReleaseTrain transaction",
         "arguments": [
             "001"
         ],

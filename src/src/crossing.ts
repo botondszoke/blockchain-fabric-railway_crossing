@@ -22,14 +22,7 @@ export class Crossing {
     @Property()
     public validityTime: number;
 
-    @Property()
-    public lanes: Array<Array<string>>;
+    @Property("lanes", "string[][]")
+    public lanes: string[][];
 
-    public register(i: number, j: number, value: string): boolean {
-        if (typeof this.lanes[i][j] === "undefined") {
-            this.lanes[i][j] = value;
-            return true;
-        }
-        return false;
-    }
 }
