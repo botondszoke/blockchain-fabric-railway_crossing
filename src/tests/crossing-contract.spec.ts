@@ -4,13 +4,13 @@
 
 import { Context } from 'fabric-contract-api';
 import { ChaincodeStub, ClientIdentity } from 'fabric-shim';
-import { CrossingContract } from '.';
+import { CrossingContract } from '../src';
 
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
-import { CrossingStatus } from './crossing';
+import { CrossingStatus } from '../src/crossing';
 import winston = require('winston');
 //import { should } from 'chai';
 
@@ -42,7 +42,7 @@ describe('CrossingContract', () => {
     describe('#permissionReleaseVehicle', () => {
 
         it('should return false if vehicle does not exist', async () => {
-            await contract.permissionReleaseVehicle(ctx, '1001', '101').should.be.rejectedWith(/Vehicle not found/);
+            await contract.permissionReleaseVehicle(ctx, '1001').should.be.rejectedWith(/Vehicle not found/);
         });
 
         /*it('should return false for a crossing that does not exist', async () => {
