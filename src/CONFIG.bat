@@ -1,0 +1,1 @@
+SET MICROFAB_CONFIG={"port":8080, "endorsing_organizations": [{"name": "RailwayCompany"}, {"name": "Vehicles"}], "channels": [{"name": "crossingchannel", "endorsing_organizations": ["RailwayCompany", "Vehicles"]}]}

@@ -1,0 +1,14 @@
+[
+    {
+      "name": "RailwayPrivateCollection",
+      "policy": "OR('RailwayCompanyMSP.member')",
+      "requiredPeerCount": 0,
+      "maxPeerCount": 1,
+      "blockToLive":500,
+      "memberOnlyRead": true,
+      "memberOnlyWrite": false,
+      "endorsementPolicy": {
+        "signaturePolicy": "OR('RailwayCompanyMSP.member')"
+      }
+    }
+]

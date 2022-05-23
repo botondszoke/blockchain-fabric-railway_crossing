@@ -1,79 +1,111 @@
 [
     {
-        "transactionName": "crossingExists",
-        "transactionLabel": "A test crossingExists transaction",
+        "transactionName": "createCrossing",
+        "transactionLabel": "Creates a crossing with 2 lanes (each with 1 capacity).",
         "arguments": [
-            "001"
+            "501",
+            "FreeToCross",
+            300,
+            2,
+            2
         ],
         "transientData": {}
     },
     {
-        "transactionName": "createCrossing",
-        "transactionLabel": "A test createCrossing transaction",
+        "transactionName": "createTrain",
+        "transactionLabel": "Creates a train (with 90 sec timeout).",
         "arguments": [
-            "001",
-            "FreeToCross",
-            500,
-            1,
-            1
+            "601",
+            "Go",
+            90
         ],
         "transientData": {}
     },
     {
         "transactionName": "readCrossing",
-        "transactionLabel": "A test readCrossing transaction",
+        "transactionLabel": "Reads the crossing, created by createCrossing.",
         "arguments": [
-            "001"
+            "501"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "readTrain",
+        "transactionLabel": "Reads the train, created by createTrain.",
+        "arguments": [
+            "601"
         ],
         "transientData": {}
     },
     {
         "transactionName": "updateCrossing",
-        "transactionLabel": "A test updateCrossing transaction",
+        "transactionLabel": "The railway infrastructure signs FreeToCross for another 5 minutes.",
         "arguments": [
-            "001",
+            "501",
             "FreeToCross",
-            500
+            300
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "updateCrossing",
+        "transactionLabel": "The railway infrastructure signs Locked for another 5 minutes.",
+        "arguments": [
+            "501",
+            "Locked",
+            300
         ],
         "transientData": {}
     },
     {
         "transactionName": "deleteCrossing",
-        "transactionLabel": "A test deleteCrossing transaction",
+        "transactionLabel": "Deletes the crossing.",
         "arguments": [
-            "001"
+            "501"
+        ],
+        "transientData": {}
+    },
+    {
+        "transactionName": "deleteTrain",
+        "transactionLabel": "Deletes the train.",
+        "arguments": [
+            "601"
         ],
         "transientData": {}
     },
     {
         "transactionName": "permissionToCrossVehicle",
-        "transactionLabel": "A test permissionToCrossVehicle transaction",
+        "transactionLabel": "Requests permission To Cross for the client vehicle.",
         "arguments": [
-            "001"
+            "501"
         ],
         "transientData": {}
     },
     {
         "transactionName": "permissionReleaseVehicle",
-        "transactionLabel": "A test permissionReleaseVehicle transaction",
+        "transactionLabel": "Releases permission to cross for the client vehicle.",
         "arguments": [
-            "001"
+            "501",
+            0,
+            0
         ],
         "transientData": {}
     },
     {
         "transactionName": "permissionToCrossTrain",
-        "transactionLabel": "A test permissionToCrossTrain transaction",
+        "transactionLabel": "Requests permission to cross for the created train.",
         "arguments": [
-            "001"
+            "501",
+            "601"
         ],
         "transientData": {}
     },
     {
         "transactionName": "permissionReleaseTrain",
-        "transactionLabel": "A test permissionReleaseTrain transaction",
+        "transactionLabel": "Releases permission of the created train.",
         "arguments": [
-            "001"
+            "501",
+            "601"
         ],
         "transientData": {}
     }
